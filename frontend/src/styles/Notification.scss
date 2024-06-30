@@ -1,0 +1,118 @@
+@import "./colors";
+
+.notification-container {
+    position: absolute;
+    top: 50px;
+    right: 0%;
+    z-index: 2;
+    display: flex;
+    gap: 15px;
+    margin: 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+
+    .notification {
+        border: 2px solid;
+        display: flex;
+        width: 100%;
+        padding: 1.5rem 1rem;
+        gap: 1rem;
+        border-radius: 25px;
+        animation: notifIn .5s ease-in-out;
+
+
+        .icon-container {
+
+            display: flex;
+            place-items: center;
+
+            svg {
+                font-size: 1.5rem;
+                scale: 1.5;
+                stroke-width: 1;
+                stroke: #218f42;
+                fill: rgb(68, 228, 19);
+
+            }
+        }
+
+
+    }
+
+    .notification-warning {
+        border-color: rgb(221, 109, 4);
+        border-radius: 25px;
+
+        .icon-container {
+            border-radius: 50% 50% 50% 50% / 100% 100% 0% 0%;
+            background-color: rgb(241, 181, 70);
+            width: fit-content;
+
+            svg {
+                font-size: 1.5rem;
+                scale: 1.5;
+                stroke-width: 1;
+                stroke: none;
+                fill: rgb(56, 25, 2);
+            }
+
+
+        }
+
+    }
+
+    .notification-info {
+        border-color: #218f42;
+
+        .icon-container {
+
+            border-radius: 100px;
+            background-color: rgb(67, 174, 67);
+            width: fit-content;
+
+            svg {
+                font-size: 1.5rem;
+                scale: 1.5;
+                stroke-width: 1.1;
+                stroke: none;
+                fill: rgb(6, 50, 9);
+            }
+
+
+        }
+
+    }
+
+    .notification-error {
+        border-color: red;
+
+        .icon-container {
+            border-radius: 21% 21% 21% 21% / 21% 21% 21% 21%;
+            background-color: rgb(255, 0, 0);
+            width: fit-content;
+
+            svg {
+                font-size: 1.5rem;
+                scale: 1.5;
+                stroke-width: 1;
+                stroke: none;
+                fill: rgb(27, 2, 2);
+            }
+
+
+        }
+
+    }
+}
+
+@keyframes notifIn {
+    from {
+        transform: translateY(-50%);
+    }
+
+    to {
+        transform: translateY(0%)
+    }
+}

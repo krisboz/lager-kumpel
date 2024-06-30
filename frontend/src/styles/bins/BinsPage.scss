@@ -1,0 +1,17 @@
+.bins-page {
+    margin: 5rem 0;
+    padding: 0 0 5rem 0;
+    overflow-y: scroll;
+    height: 100%;
+
+
+    .Collapsible__trigger {
+        margin: 1rem .5rem;
+
+        background-color: blue;
+        color: white;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+}

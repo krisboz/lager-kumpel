@@ -1,0 +1,15 @@
+.scanned-items-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    .scanned-item {
+        display: flex;
+        justify-content: space-evenly;
+
+        img {
+            width: 30px;
+            height: auto;
+        }
+    }
+}

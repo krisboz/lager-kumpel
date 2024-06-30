@@ -1,0 +1,51 @@
+@import "../colors";
+
+.actions-page {
+
+    .action-select-container {
+        margin-top: 5rem;
+    }
+
+    .action-banner {
+        padding: 2rem 1rem;
+        border-radius: 0 0 15px 15px;
+
+        p {
+            font-size: 1.5rem;
+            font-weight: 600;
+
+        }
+    }
+
+    .add {
+        background-color: $success-color;
+        color: white;
+
+    }
+
+    .move {
+        background-color: $warning-color;
+        color: black;
+    }
+
+    .remove {
+        background-color: $danger-color;
+        color: white;
+
+    }
+
+
+    .scanner-container {
+        border: 1px solid red;
+        display: flex;
+        flex-direction: column;
+        width: fit-content;
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: end;
+
+        }
+    }
+}

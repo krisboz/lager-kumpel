@@ -1,0 +1,42 @@
+.expanded-item {
+    margin: 5rem 0;
+    height: 100%;
+
+    .photo-container {
+        img {
+            height: 260px;
+            width: 260px;
+            object-fit: contain;
+        }
+    }
+
+    .locations-container {
+        margin-top: 20px;
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border: 1px solid #ccc;
+            background-color: #fff;
+            font-size: 14px;
+
+            th,
+            td {
+                padding: 8px;
+                border: 1px solid #ccc;
+            }
+
+            th {
+                background-color: #f0f0f0;
+            }
+
+            td {
+                text-align: center;
+            }
+
+            tr:nth-child(even) {
+                background-color: #f9f9f9;
+            }
+        }
+    }
+}

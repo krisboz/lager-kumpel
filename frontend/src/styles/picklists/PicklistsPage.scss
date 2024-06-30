@@ -1,0 +1,44 @@
+.picklists-page {
+    padding: 2rem;
+
+    .controls-container {
+        display: flex;
+        align-items: center;
+        padding: .5rem 1rem;
+        gap: 1rem;
+
+        button {
+            background: none;
+            border: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.1rem;
+            cursor: pointer;
+        }
+
+        .refresh-btn {
+            color: blue;
+            transition: .3s ease-in-out;
+
+            &:active {
+                transform: rotate(360deg);
+            }
+        }
+
+        .generate-btn {
+            font-size: .9rem;
+            border: 1px solid blue;
+            background-color: blue;
+            color: white;
+            border-radius: 8px;
+            padding: .3rem .7rem;
+            transition: .2s ease-in-out;
+
+            &:active {
+                background-color: rgb(4, 4, 189);
+                border-radius: 10px;
+            }
+        }
+    }
+}

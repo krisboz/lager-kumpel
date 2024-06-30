@@ -1,0 +1,33 @@
+.items-page {
+    display: flex;
+    border: 1px solid red;
+    width: 100vw;
+    height: 100vh;
+    padding: 5rem 0;
+    box-sizing: border-box;
+    overflow: hidden;
+
+    .left {
+        display: flex;
+        flex-direction: column;
+        width: 60%;
+        height: 100vh;
+
+        .items-container {
+            height: 100vh;
+            margin-bottom: 5rem;
+            overflow-y: scroll;
+        }
+    }
+
+    .right {
+
+        display: flex;
+        justify-content: center;
+        width: 40%;
+        height: 100vh;
+        overflow-y: scroll;
+
+
+    }
+}

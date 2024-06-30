@@ -1,0 +1,53 @@
+GET http://localhost:3003/api/items
+
+###
+POST http://localhost:3003/api/items
+Content-Type: application/json
+
+{
+    "barcode": "187",
+    "name":"pulli",
+    "cost": 2.99,
+    "price": 12.99,
+    "photo": "link to other foto",
+    "quantity": 1
+}
+
+###
+GET http://localhost:3003/api/bins
+
+###
+POST http://localhost:3003/api/bins
+Content-Type: application/json
+
+{
+    "name": "12f-1-a-4"
+}
+###
+DELETE http://localhost:3003/api/bins/660c6f292091423fc0c74baa
+
+###
+DELETE http://localhost:3003/api/bins/12f-1-a-3/removeItem
+Content-Type: application/json
+
+{
+    "itemsData": [{"barcode":"186","quantity":3},{"barcode": "187", "quantity":3}]
+}
+###
+
+PUT http://localhost:3003/api/bins/12f-1-a-3/addItem
+Content-Type: application/json
+
+{
+    "itemsData": [{"barcode":"186","quantity":3},{"barcode": "187", "quantity":3}]
+}
+
+###
+
+PUT http://localhost:3003/api/bins/12f-1-a-3/moveItems
+Content-Type: application/json
+
+{
+    "itemsData":[{"barcode":"186", "quantity":6},{"barcode":"187", "quantity":6}],
+    "targetLocation": "12f-1-a-4"
+}

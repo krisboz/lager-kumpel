@@ -1,0 +1,28 @@
+.item-card {
+    border: 1px solid black;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 15px;
+    margin: 1rem .5rem;
+
+    .photo-container {
+        display: flex;
+        flex-direction: column;
+
+        img {
+            height: 120px;
+            width: 120px;
+            object-fit: contain;
+        }
+    }
+
+    .info,
+    .quantity {
+        display: flex;
+        flex-direction: column;
+        place-items: center;
+    }
+
+
+}

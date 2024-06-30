@@ -1,0 +1,32 @@
+@import "./colors";
+
+nav {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: start;
+    height: 10%;
+    gap: 2rem;
+    background-color: $primary-color;
+    color: white;
+    padding: 0rem 2rem;
+
+    h3 {}
+
+    a {
+        color: white;
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+        color: white;
+    }
+
+    .active {
+        text-decoration: underline;
+    }
+}
