@@ -6,6 +6,18 @@ itemsRouter.get("/", async (request, response) => {
   response.json(items.length > 0 ? items : "No Items");
 });
 
+itemsRouter.get("/:barcode", async (request, response) => {
+  const barcode = request.params.barcode;
+  try {
+    const items = await Item.find({
+      barcode: { $regex: barcode },
+    });
+    response.json(items.length > 0 ? items : "No items found");
+  } catch (error) {
+    console.error(`error getting item ${barcode}`, error);
+  }
+});
+
 itemsRouter.post("/", async (request, response) => {
   console.log("Request Body", request.body);
   const body = request.body;

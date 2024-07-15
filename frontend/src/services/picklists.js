@@ -24,6 +24,7 @@ const getByNumber = async (picklistNumber) => {
 
 const generatePicklists = async () => {
   const flattenedItems = [];
+  const orders = [];
   let uniqueItems;
   let ordersCount = 0;
 
@@ -34,6 +35,7 @@ const generatePicklists = async () => {
       return;
     }
     ordersNotInPicklists.forEach(async (order) => {
+      orders.push(order);
       order.items.forEach((item) => {
         for (let i = 0; i < item.quantity; i++) {
           const newFlattenedEntry = {
@@ -69,7 +71,10 @@ const generatePicklists = async () => {
     //console.log({ ordersNotInPicklists, flattenedItems, uniqueItems });
     const newPicklist = generatePicklist(uniqueItems);
 
-    const response = await axios.post(baseUrl, { items: newPicklist });
+    const response = await axios.post(baseUrl, {
+      items: newPicklist,
+      orders: orders,
+    });
     useNotificationStore
       .getState()
       .addNotification(
@@ -179,9 +184,22 @@ const pickItem = async (picklistNumber, barcode) => {
   }
 };
 
+const scanInItem = async (picklistNumber, barcode, quantity) => {
+  try {
+    const response = await axios.delete(
+      `${baseUrl}/${picklistNumber}/${barcode}/${quantity}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error(error.message, error.stack);
+    throw new Error(error.message);
+  }
+};
+
 export default {
   getAll,
   getByNumber,
   generatePicklists,
   pickItem,
+  scanInItem,
 };

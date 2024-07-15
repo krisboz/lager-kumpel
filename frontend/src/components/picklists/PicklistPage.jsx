@@ -4,6 +4,7 @@ import picklistService from "../../services/picklists";
 import "../../styles/picklists/PicklistPage.scss";
 import useNotificationStore from "../../zustand/useNotificationStore";
 import picklistHelpers from "./helpers";
+import ScanInScanner from "./ScanInScanner";
 
 const PicklistPage = () => {
   const setNotification = useNotificationStore(
@@ -18,6 +19,7 @@ const PicklistPage = () => {
   const [completion, setCompletion] = useState(0);
   const [currentItemIndex, setCurrentItemIndex] = useState(0);
   const [currentItemScan, setCurrentItemScan] = useState("");
+  const [showScanIn, setShowScanIn] = useState(false);
 
   useEffect(() => {
     const fetchPicklist = async () => {
@@ -74,13 +76,6 @@ const PicklistPage = () => {
   }
   const currentItem = picklist.items[currentItemIndex];
 
-  const handlePick = async (event) => {
-    if (currentItemScan !== currentItem.barcode) {
-      setNotification("Wrong item scanned", "error");
-      return;
-    }
-  };
-
   const handleItemPick = async (event) => {
     event.preventDefault();
 
@@ -96,7 +91,6 @@ const PicklistPage = () => {
       );
       setPicklist(result);
       setCurrentItemScan("");
-      console.log(picklist.items.length, currentItemIndex);
 
       if (picklist.items.length !== currentItemIndex + 1) {
         setCurrentItemIndex((prev) => prev + 1);
@@ -110,6 +104,18 @@ const PicklistPage = () => {
     }
   };
 
+  const closeScanIn = () => {
+    setShowScanIn(false);
+  };
+
+  if (showScanIn) {
+    return (
+      <div className="scan-in-container">
+        <h1>Scan for # {picklist.picklistNumber}</h1>
+        <ScanInScanner picklist={picklist} close={closeScanIn} />
+      </div>
+    );
+  }
   return (
     <div className="picklist-page">
       <div className="current-item-container">
@@ -168,12 +174,18 @@ const PicklistPage = () => {
               onChange={(e) => setCurrentItemScan(e.target.value)}
             ></input>
             <button type="submit">Submit</button>
+            <button type="button" onClick={() => setShowScanIn(true)}>
+              Scan In
+            </button>
           </form>
         ) : (
           <form className="non-interactive-form">
             <div className="already-picked-display">
               <p>Item Already Picked</p>
             </div>
+            <button type="button" onClick={() => setShowScanIn(true)}>
+              Scan In
+            </button>
           </form>
         )}
       </div>

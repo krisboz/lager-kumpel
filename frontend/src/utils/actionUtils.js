@@ -6,11 +6,15 @@ import useNotificationStore from "../zustand/useNotificationStore";
 const populateScannedItems = (scannedItems, origin) => {
   //TODO comment it out, comment it all out
   const parsedItems = scannedItems.map((item) => item.barcode);
-  const parsedArray = origin.items.map((item) =>
-    parsedItems.includes(item.barcode) ? item : null
-  );
-
-  return parsedArray.filter((item) => item);
+  if (origin.length === 0) {
+    console.log("its empty");
+    return [];
+  } else {
+    const parsedArray = origin.items.map((item) =>
+      parsedItems.includes(item.barcode) ? item : null
+    );
+    return parsedArray.filter((item) => item);
+  }
 };
 
 const addToScannedItems = (localBarcode, localQuantity, setScannedItems) => {
@@ -39,7 +43,7 @@ const addToScannedItems = (localBarcode, localQuantity, setScannedItems) => {
     }
   } else {
     // Notify user if barcode is empty
-    throw Error("");
+    throw Error("Error scanning an item for an action");
   }
 };
 

@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 const useActionStore = create((set) => ({
   action: "",
-  origin: "",
+  origin: [],
   scannedItems: [],
 
   setAction: (action) => set({ action }),

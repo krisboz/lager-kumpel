@@ -7,6 +7,13 @@ binsRouter.get("/", async (request, response) => {
   response.json(bins);
 });
 
+binsRouter.get("/:name", async (request, response) => {
+  const name = request.params.name;
+
+  const bin = await Bin.find({ name });
+  response.json(bin);
+});
+
 binsRouter.post("/", async (request, response) => {
   const body = request.body;
 
@@ -24,7 +31,8 @@ binsRouter.post("/", async (request, response) => {
     console.log("saved bin", savedBin);
     response.status(201).json(savedBin);
   } catch (error) {
-    console.log("newly made error", error);
+    console.log("error posting a new bin", error.message, error.stack);
+    response.status(500).json({ error: error.message });
   }
 });
 
@@ -32,11 +40,7 @@ binsRouter.put("/:name/addItem", async (request, response) => {
   const body = request.body;
 
   try {
-    const savedBin = await transactions.addItemToBin(
-      body.itemsData,
-      request.params.name
-    );
-    console.log("I'm the new one if you see me good job chatgpt", savedBin);
+    const savedBin = await transactions.addItemToBin(body, request.params.name);
     response.json(savedBin);
   } catch (error) {
     console.log("should be there", error);
@@ -61,13 +65,15 @@ binsRouter.put("/:name/moveItems", async (request, response) => {
 
 binsRouter.delete("/:name/removeItem", async (request, response) => {
   const body = request.body;
+  console.log("FORM THE BACKEND", request.dy);
   try {
     const savedBin = await transactions.removeItemFromBin(
-      body.itemsData,
+      body,
       request.params.name
     );
     response.json(savedBin);
   } catch (error) {
+    console.error(error);
     response.status(500).json({ error: error.message });
   }
 });

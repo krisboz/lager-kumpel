@@ -14,6 +14,7 @@ const Navbar = () => {
       <Link to={"/actions"}>Actions</Link>
       <Link to={"/picklists"}>Picklists</Link>
       <Link to={"/orders"}>Orders</Link>
+      <Link to={"/boxes"}>Shipping boxes</Link>
     </nav>
   );
 };

@@ -15,11 +15,15 @@ const ItemCard = ({ item, setState }) => {
     <div className="item-card">
       <div className="photo-container">
         <img src={item.photo} loading="lazy" />
-        {!location.pathname.includes("bins") && (
-          <button className="select-button" onClick={handleSelectedItemChange}>
-            View
-          </button>
-        )}
+        {!location.pathname.includes("bins") ||
+          (!location.pathname.includes("boxes") && (
+            <button
+              className="select-button"
+              onClick={handleSelectedItemChange}
+            >
+              View
+            </button>
+          ))}
       </div>
       <div className="info">
         <p>{item.name}</p>

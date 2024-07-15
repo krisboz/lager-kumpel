@@ -1,6 +1,12 @@
 GET http://localhost:3003/api/items
 
 ###
+GET http://localhost:3003/api/items/25
+
+###
+GET http://localhost:3003/api/bins/1a-1-a-1
+
+###
 POST http://localhost:3003/api/items
 Content-Type: application/json
 
@@ -27,7 +33,7 @@ Content-Type: application/json
 DELETE http://localhost:3003/api/bins/660c6f292091423fc0c74baa
 
 ###
-DELETE http://localhost:3003/api/bins/12f-1-a-4/removeItem
+DELETE http://localhost:3003/api/bins/12f-1-a-3/removeItem
 Content-Type: application/json
 
 {
@@ -35,11 +41,11 @@ Content-Type: application/json
 }
 ###
 
-PUT http://localhost:3003/api/bins/12f-1-a-3/addItem
+PUT http://localhost:3003/api/bins/12f-1-a-2/addItem
 Content-Type: application/json
 
 {
-    "itemsData": [{"barcode":"186","quantity":3},{"barcode": "187", "quantity":3}]
+    "itemsData": [{"barcode": "25","quantity":7}]
 }
 
 ###

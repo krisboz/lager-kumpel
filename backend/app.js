@@ -2,6 +2,9 @@ const express = require("express");
 const config = require("./utils/config");
 const itemsRouter = require("./controllers/items");
 const binsRouter = require("./controllers/bins");
+const customerOrdersRouter = require("./controllers/customerOrders");
+const picklistsRouter = require("./controllers/picklists");
+const boxesRouter = require("./controllers/orderBoxes");
 const app = express();
 const cors = require("cors");
 require("express-async-errors");
@@ -30,6 +33,9 @@ app.use(middleware.requestLogger);
 //ADD ROUTERS
 app.use("/api/items", itemsRouter);
 app.use("/api/bins", binsRouter);
+app.use("/api/orders", customerOrdersRouter);
+app.use("/api/picklists", picklistsRouter);
+app.use("/api/boxes", boxesRouter);
 
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);

@@ -23,6 +23,7 @@ const Home = () => {
         <Link to="/orders">Orders</Link>
 
         <Link to="/picklists">Picklists</Link>
+        <Link to={"/boxes"}>Shipping boxes</Link>
       </div>
     </div>
   );

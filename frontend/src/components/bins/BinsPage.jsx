@@ -6,7 +6,7 @@ import NewBin from "./NewBin";
 import "../../styles/bins/BinsPage.scss";
 
 const BinsPage = () => {
-  const [binQuery, setBinQuery] = useState(null);
+  const [binQuery, setBinQuery] = useState("");
   const [bins, setBins] = useState([]);
   const [view, setView] = useState("list");
   const [loading, setLoading] = useState(false);
