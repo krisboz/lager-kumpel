@@ -146,9 +146,12 @@ const deletePicklistByNumber = async (picklistNumber) => {
   }
 };
 
-const deleteItemFromPicklist = async (picklistNumber, barcode) => {
-  const session = await mongoose.startSession();
-  session.startTransaction();
+const deleteItemFromPicklist = async (
+  picklistNumber,
+  barcode,
+  existingSession = null
+) => {
+  const session = existingSession || (await startSession());
 
   try {
     const picklist = await Picklist.findOne({ picklistNumber }).session(
@@ -168,15 +171,18 @@ const deleteItemFromPicklist = async (picklistNumber, barcode) => {
     }
 
     picklist.items.splice(itemIndex, 1);
-
     await picklist.save({ session });
-    await session.commitTransaction();
-    session.endSession();
+
+    if (!existingSession) {
+      await commitAndEndSession(session);
+    }
 
     return { message: "Item deleted successfully from picklist", picklist };
   } catch (error) {
-    await session.abortTransaction();
-    session.endSession();
+    if (!existingSession) {
+      await session.abortTransaction();
+      session.endSession();
+    }
     throw error;
   }
 };
@@ -219,7 +225,7 @@ const ScanInItem = async (picklistNumber, barcode, quantity) => {
       }
       //Scanned exactly the amount that was in the picklist
       if (item.quantity === quantity) {
-        await deleteItemFromPicklist(picklistNumber, barcode);
+        await deleteItemFromPicklist(picklistNumber, barcode, session);
         await picklist.save({ session });
       }
     }
