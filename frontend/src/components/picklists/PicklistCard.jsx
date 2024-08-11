@@ -29,10 +29,9 @@ const PicklistCard = ({ data }) => {
         <p className="item-count">{data.items.length}</p>
       </Link>
       <div
-        className="loading-bar"
+        className={`loading-bar ${completion === 100 && "finished"}`}
         style={{
           width: `${completion}%`,
-          backgroundColor: `${completion === 100 ? "green" : "blue"}`,
         }}
       ></div>
     </div>

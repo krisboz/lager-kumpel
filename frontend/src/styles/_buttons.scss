@@ -1,4 +1,5 @@
 // _buttons.scss
+@import "./colors";
 
 .select-button {
     display: inline-block;
@@ -24,4 +25,66 @@
 .poopoo-btn {
     color: white;
     background: pink;
+}
+
+.action-button {
+    font-size: 1rem;
+    margin: .5rem 1rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $primary-color;
+    border: 1px solid $primary-color;
+    border-radius: 6px;
+    padding: .3rem .9rem;
+
+    &:hover {
+        background-color: $primary-color;
+        color: $accent-color;
+    }
+
+    &:active {
+        background-color: $primary-color;
+        color: $accent-color;
+    }
+
+}
+
+.small {
+    font-size: .8rem;
+    padding: .1rem .3rem;
+}
+
+.download-button {
+    border: 2px solid $primary-color;
+    cursor: pointer;
+    color: $primary-color;
+    font-size: 1rem;
+    padding: .5rem .4rem;
+    border-radius: 8px;
+    background-color: $accent-color;
+    transition: .3s ease-in-out;
+
+    &:hover {
+        border: 2px solid $accent-color;
+        background-color: $primary-color;
+        color: $accent-color;
+    }
+
+}
+
+.svg-button {
+    border: none;
+    padding: 0rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: fit-content;
+
+
+    svg {
+        font-size: 1.3rem;
+    }
+
+
 }

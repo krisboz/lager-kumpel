@@ -7,24 +7,10 @@ const Home = () => {
       style={{
         display: "grid",
         placeContent: "center",
+        paddingTop: "8%",
       }}
     >
-      <div
-        className="temp-links-container"
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "1rem",
-        }}
-      >
-        <Link to="/bins">Bins</Link>
-        <Link to="/items">Items</Link>
-        <Link to="/actions">Actions</Link>
-        <Link to="/orders">Orders</Link>
-
-        <Link to="/picklists">Picklists</Link>
-        <Link to={"/boxes"}>Shipping boxes</Link>
-      </div>
+      <p>Analytics or some shit</p>
     </div>
   );
 };

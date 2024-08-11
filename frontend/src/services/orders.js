@@ -9,6 +9,16 @@ const baseUrl = "http://localhost:3003/api/orders";
 
 //get in picklist not, processed, not processed
 
+const getAll = async () => {
+  try {
+    const response = await axios.get(baseUrl);
+    return response.data;
+  } catch (error) {
+    console.error(error.message, error.stack);
+    throw error(error.message);
+  }
+};
+
 const getNotInPicklist = async () => {
   try {
     const response = await axios.get(`${baseUrl}/not_in_picklist`);
@@ -18,12 +28,43 @@ const getNotInPicklist = async () => {
   }
 };
 
+const getNotProcessed = async () => {
+  try {
+    const response = await axios.get(`${baseUrl}/unprocessed`);
+    return response.data;
+  } catch (error) {
+    console.error(error.message, error);
+  }
+};
+
+const postNewOrder = async (newOrder) => {
+  try {
+    const response = await axios.post(baseUrl, newOrder);
+    return response.data;
+  } catch (error) {
+    console.error(error.message, error.stack);
+  }
+};
+
 const patchInPicklist = async (orderNumber) => {
   try {
     const response = await axios.patch(`${baseUrl}/${orderNumber}/in_picklist`);
     return response.data;
   } catch (error) {
     console.error(error.message, error.stack);
+  }
+};
+
+const patchProcessed = async (orderNumber) => {
+  try {
+    const response = await axios.patch(`${baseUrl}/${orderNumber}/processed`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error patching processed in order",
+      error.message,
+      error.stack
+    );
   }
 };
 
@@ -38,9 +79,13 @@ const patchInMorePicklists = async (orderNumbers) => {
 };
 
 export default {
+  getAll,
   getNotInPicklist,
+  getNotProcessed,
   patchInPicklist,
   patchInMorePicklists,
+  postNewOrder,
+  patchProcessed,
 };
 
 //handleItemPick

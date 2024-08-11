@@ -1,0 +1,36 @@
+GET http://localhost:3003/api/orders
+
+###
+POST http://localhost:3003/api/orders
+Content-Type: application/json
+
+{
+    "customerName":"Dominik Bozinovic",
+    "items": [{"barcode":"22","quantity":1}, {"barcode":"24","quantity":1}, {"barcode":"23","quantity":1}]
+}
+
+
+
+###
+GET http://localhost:3003/api/orders/0000009
+
+###
+GET http://localhost:3003/api/orders/processed
+
+###
+GET http://localhost:3003/api/orders/unprocessed
+
+###
+GET http://localhost:3003/api/orders/in_picklist
+
+###
+GET http://localhost:3003/api/orders/not_in_picklist
+
+
+
+###
+PATCH http://localhost:3003/api/orders/0000009/processed
+###
+PATCH http://localhost:3003/api/orders/0000009/in_picklist
+
+

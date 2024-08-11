@@ -12,6 +12,16 @@ const getAll = async () => {
   }
 };
 
+const getOneByBarcode = async (barcode) => {
+  try {
+    const response = await axios.get(`${baseUrl}/exact/${barcode}`);
+    return response.data;
+  } catch (error) {
+    console.log("error fetching an item", error);
+    throw new Error("Error fetching item, try again");
+  }
+};
+
 const getAllContaining = async (barcode) => {
   try {
     const response = await axios.get(`${baseUrl}/${barcode}`);
@@ -46,4 +56,5 @@ export default {
   getAll,
   createNew,
   getAllContaining,
+  getOneByBarcode,
 };

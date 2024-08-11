@@ -1,7 +1,6 @@
 .bins-page {
     margin: 5rem 0;
     padding: 0 0 5rem 0;
-    overflow-y: scroll;
     height: 100%;
 
 
@@ -14,4 +13,56 @@
         font-size: 1.2rem;
     }
 
+}
+
+.bins-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: .5rem;
+}
+
+.new-bin-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 90%;
+    margin: 1rem 0;
+}
+
+.item-input-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
+}
+
+.close-button-container {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+}
+
+.bin-search-form {
+    display: flex;
+    flex-direction: row;
+    height: 1.5rem;
+    align-items: center;
+    justify-content: center;
+
+    input[type=text] {
+        border-radius: 6px;
+    }
+}
+
+.view-changer {
+    padding: 0 0 1rem 0;
+    border-bottom: 1px solid black;
 }

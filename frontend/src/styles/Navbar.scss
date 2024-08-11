@@ -1,18 +1,19 @@
 @import "./colors";
 
 nav {
-    position: absolute;
+    position: fixed;
     top: 0;
-    left: 0;
     display: flex;
     width: 100%;
     align-items: center;
     justify-content: start;
-    height: 10%;
+    height: 8%;
     gap: 2rem;
     background-color: $primary-color;
     color: white;
     padding: 0rem 2rem;
+    z-index: 2;
+
 
     h3 {}
 

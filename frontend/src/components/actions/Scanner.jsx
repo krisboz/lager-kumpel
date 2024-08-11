@@ -20,6 +20,10 @@ const Scanner = () => {
    * setScannedItems
    *
    * if action
+   * 
+   * {action !== "add" && <Origin />}
+      {action !== "add" && origin && <ItemBinScanner />}
+      {action === "add" && !origin && <ItemBinScanner />}
    */
   if (!action) {
     return null;
@@ -27,7 +31,7 @@ const Scanner = () => {
   return (
     <div className="scanner-container">
       {action !== "add" && <Origin />}
-      <ItemBinScanner />
+      {<ItemBinScanner />}
     </div>
   );
 };

@@ -1,0 +1,28 @@
+###
+GET http://localhost:3003/api/picklists
+
+###
+GET http://localhost:3003/api/picklists/0000003
+
+###
+POST http://localhost:3003/api/picklists
+Content-Type: application/json
+
+{
+    "items": [{"barcode":"23","quantity":1, "location":"a-1-a-1", "orderNumber":"0000009"}]
+
+}
+
+###
+PATCH http://localhost:3003/api/picklists/0000001
+Content-Type: application/json
+
+{
+    "barcode":"23",
+    "orderNumber":"0000009"
+
+}
+
+
+###
+DELETE http://localhost:3003/api/picklists/0000034/25/1

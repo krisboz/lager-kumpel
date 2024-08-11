@@ -1,5 +1,6 @@
 import "../../styles/items/ItemCard.scss";
 import { useLocation } from "react-router-dom";
+import { RiEyeCloseLine as Closed, RiEye2Line as Open } from "react-icons/ri";
 
 const ItemCard = ({ item, setState }) => {
   const location = useLocation();
@@ -21,17 +22,16 @@ const ItemCard = ({ item, setState }) => {
               className="select-button"
               onClick={handleSelectedItemChange}
             >
-              View
+              <Closed />
             </button>
           ))}
       </div>
       <div className="info">
-        <p>{item.name}</p>
         <p>{item.barcode}</p>
+        <p>{item.quantity}</p>
       </div>
       <div className="quantity">
-        <p>Quantity</p>
-        <p>{item.quantity}</p>
+        <p>{item.name}</p>
       </div>
     </div>
   );

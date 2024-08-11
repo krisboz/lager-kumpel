@@ -11,6 +11,7 @@ import Notification from "./components/Notification";
 function App() {
   return (
     <>
+      <Navbar />
       <Notification />
       <Notification />
       <AppRoutes />

@@ -22,10 +22,9 @@ const getByNumber = async (picklistNumber) => {
   }
 };
 
-const generatePicklists = async () => {
+const generatePicklists = async (numberOfOrders = null) => {
   const flattenedItems = [];
   const orders = [];
-  let uniqueItems;
   let ordersCount = 0;
 
   try {
@@ -34,7 +33,8 @@ const generatePicklists = async () => {
       useNotificationStore.getState().addNotification(`No new orders`, "error");
       return;
     }
-    ordersNotInPicklists.forEach(async (order) => {
+    /**
+     *    ordersNotInPicklists.forEach(async (order) => {
       orders.push(order);
       order.items.forEach((item) => {
         for (let i = 0; i < item.quantity; i++) {
@@ -46,6 +46,7 @@ const generatePicklists = async () => {
           };
 
           flattenedItems.push(newFlattenedEntry);
+
           uniqueItems = flattenedItems.reduce((acc, current) => {
             const existingItem = acc.find(
               (item) => item.barcode === current.barcode
@@ -64,22 +65,69 @@ const generatePicklists = async () => {
           }, []);
         }
       });
-      //await orderService.patchInPicklist(order.orderNumber);
+
+      //TODO RESET//await orderService.patchInPicklist(order.orderNumber);
 
       ordersCount++;
     });
-    //console.log({ ordersNotInPicklists, flattenedItems, uniqueItems });
+     */
+
+    //If the user wants to limit amount of orders that go into a single picklist
+    if (numberOfOrders) {
+      if (numberOfOrders >= ordersNotInPicklists.length) {
+        orders.push(...ordersNotInPicklists);
+      } else {
+        orders.push(...ordersNotInPicklists.slice(0, numberOfOrders));
+      }
+    } else {
+      orders.push(...ordersNotInPicklists);
+    }
+
+    const uniqueItems = await extricateItemsFromOrders(orders);
     const newPicklist = generatePicklist(uniqueItems);
+    console.log("LOOK AT ME", newPicklist, uniqueItems);
+    console.log("ORDERS", orders);
+
+    /**
+     *     ordersNotInPicklists.forEach(async (order) => {
+      const uniqueItemsForOrder = order.items.reduce((acc, current) => {
+        const existingItem = acc.find(
+          (item) => item.barcode === current.barcode
+        );
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          acc.push({
+            barcode: current.barcode,
+            quantity: current.quantity || 1,
+            photo: current.photo,
+            locations: current.locations,
+          });
+        }
+        return acc;
+      }, []);
+      console.log(uniqueItemsForOrder);
+      uniqueItems.push(...uniqueItemsForOrder);
+      console.log(uniqueItems);
+      ordersCount++;
+    });
+    console.log({ ordersNotInPicklists, uniqueItems });
+     */
+    orders.forEach(
+      async (order) => await orderService.patchInPicklist(order.orderNumber)
+    );
 
     const response = await axios.post(baseUrl, {
       items: newPicklist,
       orders: orders,
     });
-    useNotificationStore
-      .getState()
-      .addNotification(
-        `Picklist number: ${response.data.picklistNumber} created containing ${ordersCount} orders`
-      );
+    if (response) {
+      useNotificationStore
+        .getState()
+        .addNotification(
+          `Picklist number: ${response.data.picklistNumber} created containing ${orders.length} orders`
+        );
+    }
 
     return response.data;
   } catch (error) {
@@ -87,8 +135,38 @@ const generatePicklists = async () => {
   }
 };
 
+async function extricateItemsFromOrders(orders) {
+  // To store the final result with unique items and summed quantities
+  const resultArray = [];
+
+  // Iterate over each order
+  orders.forEach((order) => {
+    // Iterate over each item in the current order
+    order.items.forEach((current) => {
+      // Find the index of the item in the result array by its barcode
+      const existingItemIndex = resultArray.findIndex(
+        (item) => item.barcode === current.barcode
+      );
+      // If the item does not exist in the result array, add it
+      if (existingItemIndex === -1) {
+        resultArray.push({
+          barcode: current.barcode,
+          quantity: current.quantity || 1,
+          photo: current.photo,
+          locations: current.locations,
+        });
+      } else {
+        // If the item exists, increment the quantity
+        resultArray[existingItemIndex].quantity += current.quantity || 1;
+      }
+    });
+  });
+  return resultArray;
+}
+
 function generatePicklist(uniqueItems) {
   const picklist = [];
+  console.log("UNIQUE ITEMS", uniqueItems);
   uniqueItems.forEach((item) => {
     let originalQuantity = item.quantity;
     const locations = item.locations;

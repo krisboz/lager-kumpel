@@ -6,6 +6,7 @@ import ItemSearch from "./ItemSearch";
 
 import itemService from "../../services/items";
 import "../../styles/items/ItemsPage.scss";
+import ItemsTable from "./ItemsTable";
 
 const ItemsPage = () => {
   const [items, setItems] = useState([]);
@@ -52,15 +53,11 @@ const ItemsPage = () => {
         <div className="items-container">
           <h2>
             Items
-            <NewItem />
+            <NewItem setItems={setItems} />
           </h2>
-          {items.map((item, i) => (
-            <ItemCard item={item} key={i} setState={setSelectedItem} />
-          ))}
+
+          <ItemsTable items={items} />
         </div>
-      </div>
-      <div className="right">
-        {selectedItem && <ExpandedItem item={selectedItem} />}
       </div>
     </div>
   );

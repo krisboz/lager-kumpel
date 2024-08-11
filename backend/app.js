@@ -5,6 +5,7 @@ const binsRouter = require("./controllers/bins");
 const customerOrdersRouter = require("./controllers/customerOrders");
 const picklistsRouter = require("./controllers/picklists");
 const boxesRouter = require("./controllers/orderBoxes");
+const pdfsRouter = require("./controllers/pdfGeneration");
 const app = express();
 const cors = require("cors");
 require("express-async-errors");
@@ -36,7 +37,7 @@ app.use("/api/bins", binsRouter);
 app.use("/api/orders", customerOrdersRouter);
 app.use("/api/picklists", picklistsRouter);
 app.use("/api/boxes", boxesRouter);
-
+app.use("/api/pdf", pdfsRouter);
 app.use(middleware.unknownEndpoint);
 app.use(middleware.errorHandler);
 

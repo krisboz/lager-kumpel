@@ -23,7 +23,11 @@ const PicklistsPage = () => {
 
   const handleGeneratePicklists = async () => {
     try {
-      await picklistService.generatePicklists();
+      const newPicklist = await picklistService.generatePicklists();
+      if (!newPicklist) {
+        throw new Error("Error creating picklist");
+      }
+      setPicklists((prev) => [...prev, newPicklist]);
     } catch (error) {
       console.error(
         "error in picklist generation in PicklistsPage component",
@@ -44,7 +48,7 @@ const PicklistsPage = () => {
       </div>
 
       <div className="picklists-container">
-        {picklists.length === 0 ? (
+        {picklists && picklists.length === 0 ? (
           <h3>No picklists</h3>
         ) : (
           picklists.map((picklist) => (

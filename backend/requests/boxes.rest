@@ -1,0 +1,15 @@
+
+###
+GET http://localhost:3003/api/boxes/1
+
+###
+POST http://localhost:3003/api/boxes
+Content-Type: application/json
+
+{
+    "number":20
+}
+
+###
+PUT http://localhost:3003/api/boxes/1/reset
+

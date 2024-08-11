@@ -1,3 +1,5 @@
+@import "../colors";
+
 .blobs-container {
     line-height: 0;
     overflow: auto;
@@ -5,7 +7,7 @@
     gap: 4px;
     padding: 4px;
     border: 1px solid grey;
-    background-color: skyblue;
+    background-color: none;
     grid-template-rows: repeat(2, 1fr);
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
 
@@ -15,12 +17,18 @@
         display: flex;
         flex-direction: column;
         place-items: center;
-        background-color: #444;
+        background-color: $primary-color;
+        border-radius: 8px;
         text-align: center;
         color: #ddd;
         font-family: sans-serif;
         font-size: 1rem;
         padding: 12px;
+        cursor: pointer;
+
+        &:hover {
+            color: $accent-color;
+        }
 
     }
 

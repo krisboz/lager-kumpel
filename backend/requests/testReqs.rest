@@ -4,6 +4,9 @@ GET http://localhost:3003/api/items
 GET http://localhost:3003/api/items/25
 
 ###
+GET http://localhost:3003/api/items/exact/67
+
+###
 GET http://localhost:3003/api/bins/1a-1-a-1
 
 ###

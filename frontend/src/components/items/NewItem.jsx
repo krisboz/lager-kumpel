@@ -3,7 +3,7 @@ import useItemStore from "../../zustand/useItemStore";
 import itemService from "../../services/items";
 import { useState } from "react";
 
-const NewItem = () => {
+const NewItem = ({ setItems }) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const createItem = useItemStore((state) => state.createItem);
   const clearInputFields = (event) => {
@@ -27,6 +27,7 @@ const NewItem = () => {
     const content = { barcode, cost, name, description, price, photo };
     const newItem = await itemService.createNew(content);
     clearInputFields(event);
+    setItems((prev) => [...prev, newItem]);
     console.log(newItem);
   };
 

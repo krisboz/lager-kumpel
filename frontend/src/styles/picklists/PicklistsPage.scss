@@ -1,5 +1,9 @@
+@import "../colors";
+
 .picklists-page {
     padding: 2rem;
+    padding-top: 8%;
+
 
     .controls-container {
         display: flex;
@@ -18,7 +22,7 @@
         }
 
         .refresh-btn {
-            color: blue;
+            color: $primary-color;
             transition: .3s ease-in-out;
 
             &:active {
@@ -28,8 +32,8 @@
 
         .generate-btn {
             font-size: .9rem;
-            border: 1px solid blue;
-            background-color: blue;
+            border: 1px solid $primary-color;
+            background-color: $primary-color;
             color: white;
             border-radius: 8px;
             padding: .3rem .7rem;

@@ -1,4 +1,5 @@
 import ItemCard from "./../items/ItemCard";
+import ItemsTable from "./../items/ItemsTable";
 
 const BinsList = ({ bins }) => {
   return (
@@ -6,11 +7,8 @@ const BinsList = ({ bins }) => {
       {bins.length > 0
         ? bins.map((bin) => (
             <div key={bin.id}>
-              <h3>{bin.name}</h3>
-              <h5>Items</h5>
-              {bin.items.map((item, index) => (
-                <ItemCard item={item} />
-              ))}
+              <h1>{bin.name.toUpperCase()}</h1>
+              <ItemsTable items={bin.items} />
             </div>
           ))
         : null}

@@ -1,26 +1,29 @@
+@import "../colors";
+
 .picklist-card-container {
     margin: .5rem 0;
 
-    .picklist-card {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: .5rem 1rem;
-        border-radius: 8px 8px 0 0;
-        border: 1px solid rgba(100, 76, 76, 0.553);
+}
 
-        .in-progress {
-            color: black;
-        }
+.picklist-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .5rem 1rem;
+    border-radius: 8px 8px 0 0;
+    border: 1px solid rgba(100, 76, 76, 0.553);
+    color: $primary-color;
 
-        .done {
-            font-weight: bold;
-            color: green;
-        }
-    }
+}
 
-    .loading-bar {
-        border-radius: 0 0 8px 8px;
-        height: .5rem;
-    }
+
+.loading-bar {
+    border-radius: 0 0 8px 8px;
+    height: .5rem;
+    background-color: $primary-color;
+
+}
+
+.finished {
+    background-color: green;
 }

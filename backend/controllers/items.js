@@ -6,6 +6,18 @@ itemsRouter.get("/", async (request, response) => {
   response.json(items.length > 0 ? items : "No Items");
 });
 
+itemsRouter.get("/exact/:barcode", async (request, response) => {
+  const barcode = request.params.barcode;
+  try {
+    const item = await Item.findOne({ barcode }).exec();
+    console.log("SINGLE FETCHED ITEM: ", item);
+    response.status(200).json(item);
+  } catch (error) {
+    console.log("error fetching an item", error.message, error.stack);
+    response.status(500).send({ error: "Error fetching an item by barcode" });
+  }
+});
+
 itemsRouter.get("/:barcode", async (request, response) => {
   const barcode = request.params.barcode;
   try {

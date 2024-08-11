@@ -1,6 +1,7 @@
 import binService from "../services/bins";
+import itemService from "../services/items";
 
-import useActionStore from "../zustand/useActionStore"; // Import your Zustand store
+import useActionStore from "../zustand/useActionStore";
 import useNotificationStore from "../zustand/useNotificationStore";
 
 const populateScannedItems = (scannedItems, origin) => {
@@ -102,7 +103,7 @@ const handleBinScan = async (localBarcode, state) => {
         `Succesfully moved ${state.scannedItems.reduce(
           (total, item) => total + item.quantity,
           0
-        )} items from ${state.origin} to ${localBarcode}`
+        )} items from ${state.origin.name} to ${localBarcode}`
       );
       state.setters.setScannedItems([]);
     } catch (error) {
@@ -195,24 +196,36 @@ const processScan = async (curr, state, isBin) => {
     return { message: "You need to scan something first", type: "error" };
   }
 
-  console.log({ curr, state });
+  try {
+    if (isBin.length > 0) {
+      if (state.scannedItems.length === 0) {
+        return { message: "You need to scan an item first", type: "error" };
+      }
 
-  if (isBin.length > 0) {
-    if (state.scannedItems.length === 0) {
-      return { message: "You need to scan an item first", type: "error" };
+      //It's a bin
+      const binRes = await handleBinScan(curr.localBarcode, state);
+      if (binRes) return { message: binRes.message, type: binRes.type };
+    } else {
+      //it's an item
+      const scannedItem = await itemService.getOneByBarcode(curr.localBarcode);
+      console.log({ scannedItem });
+
+      if (!scannedItem) {
+        return { message: "No such item found!", type: "error" };
+      }
+      const itemRes = handleItemScan(
+        curr.localBarcode,
+        curr.localQuantity,
+        state
+      );
+      if (itemRes) return { message: itemRes.message, type: itemRes.type };
     }
-
-    //It's a bin
-    const binRes = await handleBinScan(curr.localBarcode, state);
-    if (binRes) return { message: binRes.message, type: binRes.type };
-  } else {
-    //it's an item
-    const itemRes = handleItemScan(
-      curr.localBarcode,
-      curr.localQuantity,
-      state
+  } catch (error) {
+    console.error(
+      "ERROR IN PROCESSSCAN, ACTIONUTILS.JS",
+      error.message,
+      error.stack
     );
-    if (itemRes) return { message: itemRes.message, type: itemRes.type };
   }
 };
 
