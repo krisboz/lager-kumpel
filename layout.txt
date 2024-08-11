@@ -1,0 +1,58 @@
+users
+articles
+lagerplatze
+
+prodavači
+
+kupci
+
+
+1. users
+    User: (like the boss)
+    -username
+    -password
+    -name (name of the "company")
+    - users (all accounts that can access the data)
+        -username
+        -password
+        -activity history(?) kao kad je sta ulagerovao
+    - articleSchemaSetup
+        - all extra things one might need
+    -id
+
+2. Articles
+
+all need to have:
+barcode
+photo-link
+wholesale-price
+price
+location(in lager)
+quantity
+supplier-information(later)
+reorder point (later)
+size
+classification(optional, like shorts, tshirts)
+weight(optional)
+sales history (later)
+
+
+const ArtikkelSchema = new mongoose.Schema({
+  title: { type: String, required: [true, "title required"] },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+  },
+  url: String,
+  likes: Number,
+  user: String,
+});
+
+
+3. lagerplatze, Locations
+
+    lagerplatze: {
+      "2f-3-e-1":[{code:234234234, quantity:1}, {code:35325235, quantity, 5}],
+      
+    }
+
