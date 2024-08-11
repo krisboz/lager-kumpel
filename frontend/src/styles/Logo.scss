@@ -1,0 +1,35 @@
+.logo-container {
+    display: flex;
+    flex-direction: row;
+    gap: .85rem;
+    align-items: center;
+
+
+
+    .logo-wrapper {
+        font-size: 2rem;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+
+        &::after {
+            content: "_";
+            font-weight: bold;
+            position: absolute;
+            top: -.84rem;
+            transform: translateX(110%);
+
+        }
+    }
+
+    p {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: translateX(-12%);
+        font-weight: bold;
+        white-space: nowrap;
+    }
+}

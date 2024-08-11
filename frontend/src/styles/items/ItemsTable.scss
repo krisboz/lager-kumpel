@@ -1,0 +1,61 @@
+@import "../colors";
+
+.items-table {
+    margin: 2rem;
+    border: 1px solid blue;
+    padding: 1rem;
+    border-radius: 6px;
+
+
+    thead {
+        background-color: blue;
+        color: white;
+
+        tr {
+
+            th {}
+        }
+    }
+
+    tbody {
+        tr {
+            td {
+                text-wrap: nowrap;
+            }
+
+        }
+    }
+}
+
+.items-table {
+    border-collapse: collapse;
+    width: 90%;
+
+    td,
+    th {
+        border: 1px solid #ddd;
+        padding: 8px;
+    }
+
+    tr {
+        &:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        &:hover {
+            background-color: #ddd;
+        }
+
+        td {
+            text-wrap: nowrap;
+        }
+    }
+
+    th {
+        padding-top: 12px;
+        padding-bottom: 12px;
+        text-align: left;
+        background-color: $primary-color;
+        color: white;
+    }
+}

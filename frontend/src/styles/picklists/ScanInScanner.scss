@@ -1,0 +1,87 @@
+.scan-in-form {
+    display: flex;
+    flex-direction: column;
+
+    align-items: center;
+    gap: 1rem;
+
+    .scanner {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .3rem;
+
+        input {
+            padding: .3rem .7rem;
+            border-radius: 8px;
+            border: 1px solid black;
+        }
+
+        button[type=submit] {
+            font-size: .9rem;
+            border: 1px solid black;
+            background-color: rgb(7, 7, 162);
+            color: white;
+            border-radius: 8px;
+            padding: .3rem .7rem;
+            transition: .2s ease-in-out;
+            cursor: pointer;
+
+            &:active {
+                background-color: rgb(3, 3, 100);
+                border-radius: 10px;
+            }
+        }
+    }
+
+    .pick-button {
+        font-size: 1rem;
+    }
+}
+
+.scan-info-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    .scan-box-container {
+
+        h1 {
+            font-size: 8rem;
+            color: black;
+            font-weight: 600;
+            line-height: 1;
+            padding: .5rem;
+
+            border-radius: 8px;
+        }
+    }
+
+    .scan-item-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border: 1px solid rgba(0, 0, 0, 0.226);
+        padding: .5rem;
+        border-radius: 8px;
+    }
+}
+
+.assigned-box-number {
+    animation: popIn 1s ease-in-out;
+
+}
+
+@keyframes popIn {
+    from {
+        transform: scale(0.7);
+    }
+
+    50% {
+        transform: scale(1.3);
+    }
+
+    to {
+        transform: scale(1);
+    }
+}

@@ -1,0 +1,14 @@
+.order-display {
+    height: 60vh;
+    overflow-y: scroll;
+
+    .customer-info-container {
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+
+        .address-container {}
+    }
+
+    .items-container {}
+}
