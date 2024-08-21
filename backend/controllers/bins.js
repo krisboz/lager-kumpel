@@ -38,6 +38,7 @@ binsRouter.post("/", async (request, response) => {
 
 binsRouter.put("/:name/addItem", async (request, response) => {
   const body = request.body;
+  console.log("BOD", body);
 
   try {
     const savedBin = await transactions.addItemToBin(body, request.params.name);

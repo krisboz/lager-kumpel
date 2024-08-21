@@ -7,7 +7,7 @@ POST http://localhost:3003/api/boxes
 Content-Type: application/json
 
 {
-    "number":20
+    "number":3
 }
 
 ###

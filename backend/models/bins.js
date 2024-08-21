@@ -5,6 +5,9 @@ const innerItemSchema = new mongoose.Schema({
   quantity: { type: Number, required: true },
   name: { type: String, required: true },
   photo: { type: String, required: true },
+  price: { type: Number, required: true },
+  cost: { type: Number, required: true },
+  locations: { type: Array, required: true },
 });
 
 const binSchema = new mongoose.Schema({
