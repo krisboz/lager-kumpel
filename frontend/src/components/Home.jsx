@@ -1,5 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import AppDescription from "./app_info/AppDescription";
+import Tutorial from "./app_info/Tutorial";
 
 const Home = () => {
   return (
@@ -10,7 +12,7 @@ const Home = () => {
         paddingTop: "8%",
       }}
     >
-      <p>Analytics or some shit</p>
+      <Tutorial />
     </div>
   );
 };

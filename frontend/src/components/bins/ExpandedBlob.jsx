@@ -1,13 +1,13 @@
 import React from "react";
 import ItemCard from "./../items/ItemCard";
+import ItemsTable from "./../items/ItemsTable";
 
 const ExpandedBlob = ({ binData }) => {
+  console.log("BIN DATAAA: ", binData);
   return (
     <div>
       <h1>{binData.name}</h1>
-      {binData.items.map((item) => (
-        <ItemCard item={item} />
-      ))}
+      <ItemsTable items={binData.items} />
     </div>
   );
 };

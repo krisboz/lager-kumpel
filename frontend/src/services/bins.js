@@ -16,7 +16,7 @@ const getOneByName = async (name) => {
     const response = await axios.get(`${baseUrl}/${name}`);
     return response.data;
   } catch (error) {
-    console.error("error fetching bin", error);
+    console.error("error fetching bin", error.message, error.stack);
   }
 };
 

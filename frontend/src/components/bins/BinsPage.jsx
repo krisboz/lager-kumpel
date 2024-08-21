@@ -7,7 +7,6 @@ import "../../styles/bins/BinsPage.scss";
 import { CgSearch as SearchButton } from "react-icons/cg";
 import useNotificationStore from "../../zustand/useNotificationStore";
 import "../../styles/_buttons.scss";
-import { IoGrid as Blob, IoList as List } from "react-icons/io5";
 
 const BinsPage = () => {
   const setNotification = useNotificationStore(
@@ -34,6 +33,7 @@ const BinsPage = () => {
         return;
       }
       setBins(bin);
+      setBinQuery("");
       setLoading(false);
     } catch (error) {
       console.error(error);
@@ -86,7 +86,9 @@ const BinsPage = () => {
       {bins && (
         <>
           {view === "blob" ? (
-            <BinBlobs bins={bins} />
+            <>
+              <BinBlobs bins={bins} />
+            </>
           ) : (
             <BinsList bins={bins} />
           )}

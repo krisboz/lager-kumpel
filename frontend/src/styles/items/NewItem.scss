@@ -1,6 +1,76 @@
-.item-input-form {
+@import "../colors";
+
+.new-item-input-form {
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: $primary-color;
+    font-size: 1.1rem;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: end;
+    gap: .3rem;
+    color: $accent-color;
+    border: 1px solid pink;
+    animation: popIn 0.3s ease-out;
+    width: 360px;
+
+
+
+    label {
+        margin-right: 1rem;
+
+
+        input {
+            margin-left: .5rem;
+            padding: .2rem;
+
+
+            &:focus {
+                outline: none;
+                border: 3px solid $accent-color;
+            }
+        }
+    }
+
+    .submit-new-item-btn {
+        color: $accent-color;
+        border: 1px solid $accent-color;
+
+        &:hover {
+            color: $primary-color;
+            background-color: $accent-color;
+            border: 1px solid $primary-color;
+        }
+    }
+
+
+}
+
+
+
+.new-item-form-header-container {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+
+}
+
+.submit-new-item-button {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    padding: 1rem;
+}
+
+
+@keyframes popIn {
+    from {
+        transform: translateY(-100%);
+    }
+
+
+
+    to {
+        transform: translateY(0%);
+    }
 }

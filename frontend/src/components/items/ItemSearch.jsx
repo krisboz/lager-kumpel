@@ -1,4 +1,5 @@
 import { useState } from "react";
+import "../../styles/_buttons.scss";
 
 const ItemSearch = ({ setQuery }) => {
   const [inputValue, setInputValue] = useState("");
@@ -23,8 +24,14 @@ const ItemSearch = ({ setQuery }) => {
           />
         </label>
 
-        <button type="submit">Search</button>
-        <button type="button" onClick={handleAllSearch}>
+        <button className="action-button" type="submit">
+          Search
+        </button>
+        <button
+          className="action-button"
+          type="button"
+          onClick={handleAllSearch}
+        >
           Get All
         </button>
       </form>

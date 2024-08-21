@@ -55,6 +55,25 @@
     padding: .1rem .3rem;
 }
 
+.delete-button {
+    background-color: $danger-color;
+    border: 1px solid $accent-color;
+    color: $accent-color;
+    font-weight: bolder;
+    font-family: inherit;
+
+    &:hover {
+        background-color: $danger-color;
+
+        border: 1px solid $danger-color;
+    }
+
+    &:active {
+        background-color: $primary-color;
+        color: $accent-color;
+    }
+}
+
 .download-button {
     border: 2px solid $primary-color;
     cursor: pointer;
@@ -69,6 +88,7 @@
         border: 2px solid $accent-color;
         background-color: $primary-color;
         color: $accent-color;
+        transform: translateX(55px);
     }
 
 }
@@ -79,12 +99,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    background-color: $accent-color;
     height: fit-content;
+    border-radius: 100%;
+    border: 1px solid $primary-color;
+    transition: .1s ease-in-out;
+    padding: .3rem;
+
 
 
     svg {
         font-size: 1.3rem;
     }
+
+    &:hover {}
 
 
 }

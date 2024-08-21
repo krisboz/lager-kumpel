@@ -1,45 +1,23 @@
 @import "../colors";
 
 .items-table {
-    margin: 2rem;
-    border: 1px solid blue;
-    padding: 1rem;
-    border-radius: 6px;
-
-
-    thead {
-        background-color: blue;
-        color: white;
-
-        tr {
-
-            th {}
-        }
-    }
-
-    tbody {
-        tr {
-            td {
-                text-wrap: nowrap;
-            }
-
-        }
-    }
-}
-
-.items-table {
     border-collapse: collapse;
-    width: 90%;
+    width: 100%;
+    border-radius: 6px;
 
     td,
     th {
         border: 1px solid #ddd;
         padding: 8px;
+
     }
 
     tr {
+        cursor: pointer;
+
         &:nth-child(even) {
             background-color: #f2f2f2;
+
         }
 
         &:hover {
@@ -57,5 +35,16 @@
         text-align: left;
         background-color: $primary-color;
         color: white;
+    }
+}
+
+.photo-field {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+        width: 30px;
+        height: auto;
     }
 }

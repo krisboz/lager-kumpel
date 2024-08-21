@@ -32,6 +32,7 @@ const ItemBinScanner = () => {
     try {
       //TODO ACCIDENTAL FALSE ITEM BARCODE SCAN
       const isBin = await binService.getOneByName(localBarcode);
+      console.log({ localBarcode, isBin });
 
       const scanRes = await actionUtils.processScan(
         { localBarcode, localQuantity },
@@ -73,7 +74,9 @@ const ItemBinScanner = () => {
           onChange={(e) => setLocalBarcode(e.target.value)}
         />
       </label>
-      <button type="submit">Submit</button>
+      <button className="action-button" type="submit">
+        Submit
+      </button>
     </form>
   );
 };

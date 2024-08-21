@@ -1,11 +1,19 @@
+@import "../colors";
+
 .scanned-items-container {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    align-items: center;
+    gap: 1rem;
 
     .scanned-item {
         display: flex;
         justify-content: space-evenly;
+        width: 90%;
+        gap: 1rem;
+        border: 1px solid black;
+        border-radius: 8px;
 
         img {
             width: 30px;

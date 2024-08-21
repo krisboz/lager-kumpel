@@ -1,6 +1,6 @@
 .order-display {
-    height: 60vh;
-    overflow-y: scroll;
+    height: 40vh;
+    padding-top: 6rem;
 
     .customer-info-container {
         padding: 1rem;
@@ -11,4 +11,9 @@
     }
 
     .items-container {}
+}
+
+.order-forms-container {
+    position: relative;
+    z-index: 0;
 }

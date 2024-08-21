@@ -7,6 +7,8 @@ import ItemSearch from "./ItemSearch";
 import itemService from "../../services/items";
 import "../../styles/items/ItemsPage.scss";
 import ItemsTable from "./ItemsTable";
+import { CgAddR as AddButton, CgCloseR as CloseButton } from "react-icons/cg";
+import "../../styles/_buttons.scss";
 
 const ItemsPage = () => {
   const [items, setItems] = useState([]);
@@ -47,16 +49,18 @@ const ItemsPage = () => {
 
   return (
     <div className="items-page">
-      <div className="left">
-        <ItemSearch setQuery={setItemQuery} />
+      <ItemSearch setQuery={setItemQuery} />
 
-        <div className="items-container">
-          <h2>
-            Items
-            <NewItem setItems={setItems} />
-          </h2>
+      <div className="items-container">
+        <div className="heading-container">
+          <h2>Items</h2>
+        </div>
+        <div className="new-item-outer-container">
+          <NewItem setItems={setItems} />
+        </div>
 
-          <ItemsTable items={items} />
+        <div className="functional-container">
+          <ItemsTable items={items} blockDetailedView={false} />
         </div>
       </div>
     </div>

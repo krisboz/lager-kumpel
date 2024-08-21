@@ -2,6 +2,8 @@ import "../../styles/items/NewItem.scss";
 import useItemStore from "../../zustand/useItemStore";
 import itemService from "../../services/items";
 import { useState } from "react";
+import { CgAddR as AddButton, CgCloseR as CloseButton } from "react-icons/cg";
+import "../../styles/_buttons.scss";
 
 const NewItem = ({ setItems }) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -45,40 +47,62 @@ const NewItem = ({ setItems }) => {
      */
 
   if (!isExpanded) {
-    return <button onClick={toggleIsExpanded}>Add New!</button>;
+    return (
+      <button onClick={toggleIsExpanded} className="svg-button action-button">
+        <AddButton />
+      </button>
+    );
   }
 
   return (
-    <form onSubmit={handleSubmit} className="item-input-form">
-      <label>
-        Barcode:
-        <input name="barcode" required={true} />
-      </label>
-      <label>
-        Cost:
-        <input name="cost" type="float" />
-      </label>
-      <label>
-        Name:
-        <input name="name" />
-      </label>
-      <label>
-        Description:
-        <input name="description" />
-      </label>
-      <label>
-        Price:
-        <input name="price" />
-      </label>
+    <>
+      <div className="item-input-button-container">
+        <button
+          onClick={toggleIsExpanded}
+          type="button"
+          className="svg-button action-button"
+        >
+          <CloseButton />
+        </button>
+      </div>
 
-      <label>
-        Photo:
-        <input name="photo" />
-      </label>
+      <form onSubmit={handleSubmit} className="new-item-input-form">
+        <div className="new-item-form-header-container">
+          <h3>Add new item</h3>
+        </div>
+        <label>
+          Barcode:
+          <input name="barcode" required={true} />
+        </label>
+        <label>
+          Cost:
+          <input name="cost" type="float" />
+        </label>
+        <label>
+          Name:
+          <input name="name" />
+        </label>
+        <label>
+          Description:
+          <input name="description" />
+        </label>
+        <label>
+          Price:
+          <input name="price" />
+        </label>
 
-      <button type="submit">Submit</button>
-      <button onClick={toggleIsExpanded}>Close Form</button>
-    </form>
+        <label>
+          Photo:
+          <input name="photo" />
+        </label>
+
+        <div className="submit-new-item-button">
+          <button className="action-button submit-new-item-btn" type="submit">
+            Submit
+          </button>
+        </div>
+      </form>
+    </>
   );
 };
 

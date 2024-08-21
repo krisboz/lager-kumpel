@@ -4,22 +4,7 @@ import itemService from "../services/items";
 import useActionStore from "../zustand/useActionStore";
 import useNotificationStore from "../zustand/useNotificationStore";
 
-const populateScannedItems = (scannedItems, origin) => {
-  //TODO comment it out, comment it all out
-  const parsedItems = scannedItems.map((item) => item.barcode);
-  if (origin.length === 0) {
-    console.log("its empty");
-    return [];
-  } else {
-    const parsedArray = origin.items.map((item) =>
-      parsedItems.includes(item.barcode) ? item : null
-    );
-    return parsedArray.filter((item) => item);
-  }
-};
-
-const addToScannedItems = (localBarcode, localQuantity, setScannedItems) => {
-  const newItem = { barcode: localBarcode, quantity: +localQuantity };
+const addToScannedItems = (newItem, setScannedItems) => {
   console.log("that's shoulds be addeds", newItem);
 
   // Get the current state of scannedItems
@@ -29,22 +14,17 @@ const addToScannedItems = (localBarcode, localQuantity, setScannedItems) => {
     (item) => item.barcode === newItem.barcode
   );
 
-  if (localBarcode !== "") {
-    if (index !== -1) {
-      // If item exists, update its quantity
-      const updatedItems = scannedItems.map((item, i) =>
-        index === i
-          ? { ...item, quantity: item.quantity + newItem.quantity }
-          : item
-      );
-      setScannedItems(updatedItems);
-    } else {
-      // If item doesn't exist, add it to the list
-      setScannedItems([...scannedItems, newItem]);
-    }
+  if (index !== -1) {
+    // If item exists, update its quantity
+    const updatedItems = scannedItems.map((item, i) =>
+      index === i
+        ? { ...item, quantity: item.quantity + newItem.quantity }
+        : item
+    );
+    setScannedItems(updatedItems);
   } else {
-    // Notify user if barcode is empty
-    throw Error("Error scanning an item for an action");
+    // If item doesn't exist, add it to the list
+    setScannedItems([...scannedItems, newItem]);
   }
 };
 
@@ -144,51 +124,61 @@ const handleBinScan = async (localBarcode, state) => {
   }
 };
 
-const handleItemScan = (code, quantity, state) => {
+const handleItemScan = async (code, quantity, state) => {
   //TODO check first that it exists either in items
   //or if we ever implement shipping orders that would be best
   //Actually that should be checked in the processScan function
-  const temporaryCheck = true;
+  try {
+    const scannedItem = await itemService.getOneByBarcode(code);
+    const adjustedItem = { ...scannedItem, quantity: quantity };
+    console.log({ adjustedItem });
 
-  if (!temporaryCheck) {
-    return { message: "Unknown Item", type: "error" };
+    if (!scannedItem) {
+      return { message: "No such item found!", type: "error" };
+    }
+
+    if (state.action === "add") {
+      addToScannedItems(
+        { ...adjustedItem, quantity: quantity },
+        state.setters.setScannedItems
+      );
+      return;
+    }
+    if (!state.origin) {
+      return { message: "You need to set the origin first", type: "error" };
+    }
+
+    const index = state.origin.items.findIndex((item) => item.barcode === code);
+    if (index === -1) {
+      return { message: `No such item in ${state.origin.name}`, type: "error" };
+    }
+
+    //Lastly check if the scanned quantity is smaller than the origin quantity
+
+    const originQuantity = state.origin.items.filter(
+      (el) => el.barcode === code
+    )[0].quantity;
+    //if it's the first item scanned take the input quantity only
+
+    const stateQuantity = state.scannedItems.filter(
+      (el) => el.barcode === code
+    )[0]
+      ? state.scannedItems.filter((el) => el.barcode === code)[0].quantity +
+        quantity
+      : quantity;
+
+    if (stateQuantity > originQuantity) {
+      return {
+        message: `There isn't enough of that item in the bin ${state.origin.name},`,
+        type: "error",
+      };
+    }
+
+    addToScannedItems(adjustedItem, state.setters.setScannedItems);
+  } catch (error) {
+    console.log("error in handleItemScan", error.message, error.stack);
+    throw new Error(error.message);
   }
-
-  if (state.action === "add") {
-    addToScannedItems(code, quantity, state.setters.setScannedItems);
-    return;
-  }
-  if (!state.origin) {
-    return { message: "You need to set the origin first", type: "error" };
-  }
-
-  const index = state.origin.items.findIndex((item) => item.barcode === code);
-  if (index === -1) {
-    return { message: `No such item in ${state.origin.name}`, type: "error" };
-  }
-
-  //Lastly check if the scanned quantity is smaller than the origin quantity
-
-  const originQuantity = state.origin.items.filter(
-    (el) => el.barcode === code
-  )[0].quantity;
-  //if it's the first item scanned take the input quantity only
-
-  const stateQuantity = state.scannedItems.filter(
-    (el) => el.barcode === code
-  )[0]
-    ? state.scannedItems.filter((el) => el.barcode === code)[0].quantity +
-      quantity
-    : quantity;
-
-  if (stateQuantity > originQuantity) {
-    return {
-      message: `There isn't enough of that item in the bin ${state.origin.name},`,
-      type: "error",
-    };
-  }
-
-  addToScannedItems(code, quantity, state.setters.setScannedItems);
 };
 
 const processScan = async (curr, state, isBin) => {
@@ -197,7 +187,7 @@ const processScan = async (curr, state, isBin) => {
   }
 
   try {
-    if (isBin.length > 0) {
+    if (!isBin || isBin.length > 0) {
       if (state.scannedItems.length === 0) {
         return { message: "You need to scan an item first", type: "error" };
       }
@@ -207,13 +197,8 @@ const processScan = async (curr, state, isBin) => {
       if (binRes) return { message: binRes.message, type: binRes.type };
     } else {
       //it's an item
-      const scannedItem = await itemService.getOneByBarcode(curr.localBarcode);
-      console.log({ scannedItem });
 
-      if (!scannedItem) {
-        return { message: "No such item found!", type: "error" };
-      }
-      const itemRes = handleItemScan(
+      const itemRes = await handleItemScan(
         curr.localBarcode,
         curr.localQuantity,
         state
@@ -229,4 +214,4 @@ const processScan = async (curr, state, isBin) => {
   }
 };
 
-export default { addToScannedItems, processScan, populateScannedItems };
+export default { addToScannedItems, processScan };

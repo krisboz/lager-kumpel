@@ -43,7 +43,7 @@ const ItemBinScanner = () => {
     }
   };
 
-  if (origin) {
+  if (origin.name) {
     return (
       <div style={{ display: "flex" }}>
         <p>{origin.name}</p>

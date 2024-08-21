@@ -1,6 +1,7 @@
 import useActionStore from "../../zustand/useActionStore";
 import actionUtils from "../../utils/actionUtils";
 import "../../styles/actions2/ScannedItems.scss";
+import "../../styles/_buttons.scss";
 
 const ScannedItems = () => {
   const {
@@ -13,10 +14,12 @@ const ScannedItems = () => {
   } = useActionStore();
 
   if (scannedItems.length === 0) {
-    return <h4>No items scanned</h4>;
+    return (
+      <div className="scanned-items-container">
+        <h4>No items scanned</h4>
+      </div>
+    );
   }
-
-  const populatedItems = actionUtils.populateScannedItems(scannedItems, origin);
 
   const deleteScannedItems = (e) => {
     setScannedItems([]);
@@ -24,19 +27,18 @@ const ScannedItems = () => {
 
   return (
     <div className="scanned-items-container">
-      <button type="button" onClick={deleteScannedItems}>
+      <button
+        type="button"
+        className="action-button delete-button"
+        onClick={deleteScannedItems}
+      >
         Delete Scanned Items
       </button>
       {scannedItems.map((item) => {
-        const populated = populatedItems
-          ? populatedItems.find((item2) => item2.barcode === item.barcode)
-          : null;
-
         return (
           <div key={item.barcode} className="scanned-item">
-            {populated && populated.photo ? (
-              <img src={populated.photo} alt="Scanned item" />
-            ) : null}
+            <img src={item.photo} alt="Scanned item" />
+
             <p>{item.barcode}</p>
             <p>{item.quantity}</p>
           </div>

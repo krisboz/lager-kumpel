@@ -158,8 +158,8 @@ const BoxesPage = () => {
       )}
       {boxToView && boxToView.scannedItems.length > 0 && (
         <div className="close-order-btn-container">
-          <button onClick={handleCloseOrder}>Close Out The Order</button>
           <InvoiceDownloadButton order={boxToView.order} />
+          <button onClick={handleCloseOrder}>Close Out The Order</button>
         </div>
       )}
     </main>

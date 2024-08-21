@@ -18,7 +18,6 @@ const Navbar = () => {
 
       <Link to="/picklists">Picklists</Link>
       <Link to="/boxes">Shipping boxes</Link>
-      <Link to="/">Ship Out</Link>
     </nav>
   );
 };

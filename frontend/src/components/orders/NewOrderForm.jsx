@@ -5,6 +5,9 @@ import useNotificationStore from "../../zustand/useNotificationStore";
 import "../../styles/orders/NewOrderForm.scss";
 import ItemsTable from "../items/ItemsTable";
 import { IoIosAddCircle as AddBtn } from "react-icons/io";
+import "../../styles/_buttons.scss";
+
+import { CgCloseR as CloseButton } from "react-icons/cg";
 
 const ItemsForm = ({ setItems }) => {
   const setNotification = useNotificationStore(
@@ -37,30 +40,46 @@ const ItemsForm = ({ setItems }) => {
     }
   };
   return (
-    <div className="items-form-container">
-      <h4>Order Items</h4>
+    <>
+      <div className="items-form-container">
+        <h4>Order Items</h4>
 
-      <form className="items-form" onSubmit={handleAddItem}>
-        <label>
-          Quantity:
-          <input
-            type="number"
-            value={quantity}
-            onChange={(e) => setQuantity(e.target.value)}
-          />
-        </label>
-        <label>
-          Barcode:
-          <input value={barcode} onChange={(e) => setBarcode(e.target.value)} />
-        </label>
+        <form className="items-form" onSubmit={handleAddItem}>
+          <label>
+            Quantity:
+            <input
+              type="number"
+              value={quantity}
+              onChange={(e) => setQuantity(e.target.value)}
+            />
+          </label>
+          <label>
+            Barcode:
+            <input
+              value={barcode}
+              onChange={(e) => setBarcode(e.target.value)}
+            />
+          </label>
 
-        <button type="submit" className="item-add-btn">
-          <AddBtn />
-        </button>
-        {loading && <p>Loading...</p>}
-      </form>
-      <ItemsTable items={addedItems} />
-    </div>
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <button type="submit" className="action-button svg-button">
+              <AddBtn />
+            </button>
+          </div>
+
+          {loading && <p>Loading...</p>}
+        </form>
+      </div>
+      <div style={{ pointerEvents: "none", border: "1px solid red" }}>
+        <ItemsTable items={addedItems} />
+      </div>
+    </>
   );
 };
 
@@ -97,6 +116,15 @@ const NewOrderForm = ({ setOrders, closeForm }) => {
     };
     try {
       const savedOrder = await orderService.postNewOrder(newOrder);
+      if (!savedOrder) {
+        console.log("problmatic", savedOrder);
+        setNotification(
+          "Incomplete fields or items not in stock! Creation failed!",
+          "error"
+        );
+        return;
+      }
+
       setOrders((prev) => [...prev, savedOrder]);
       setNotification("Order created successfully");
       closeForm();
@@ -108,7 +136,12 @@ const NewOrderForm = ({ setOrders, closeForm }) => {
 
   return (
     <div className="order-forms-container">
-      <button onClick={closeForm}>Close</button>
+      <div className="close-btn-container">
+        <button className="svg-button action-button" onClick={closeForm}>
+          <CloseButton />
+        </button>
+      </div>
+      <h2>Add Custom Order</h2>
       <form
         className="order-form"
         style={{
@@ -150,7 +183,7 @@ const NewOrderForm = ({ setOrders, closeForm }) => {
             </label>
 
             <label>
-              House number:
+              House no.:
               <input
                 value={houseNumber}
                 onChange={(e) => setHouseNumber(e.target.value)}
@@ -180,7 +213,9 @@ const NewOrderForm = ({ setOrders, closeForm }) => {
           </section>
         </div>
 
-        <button type="submit">Submit Order</button>
+        <button type="submit" className="action-button">
+          Submit Order
+        </button>
       </form>
       <ItemsForm setItems={setItems} />
     </div>

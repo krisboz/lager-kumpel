@@ -28,10 +28,23 @@ const Scanner = () => {
   if (!action) {
     return null;
   }
+  if (action === "add") {
+    return (
+      <div className="scanner-container">
+        <ItemBinScanner />
+      </div>
+    );
+  }
+
   return (
     <div className="scanner-container">
-      {action !== "add" && <Origin />}
-      {<ItemBinScanner />}
+      {origin.length > 0 ? (
+        <Origin />
+      ) : (
+        <>
+          <Origin /> <ItemBinScanner />
+        </>
+      )}
     </div>
   );
 };

@@ -8,7 +8,7 @@ const BinsList = ({ bins }) => {
         ? bins.map((bin) => (
             <div key={bin.id}>
               <h1>{bin.name.toUpperCase()}</h1>
-              <ItemsTable items={bin.items} />
+              <ItemsTable items={bin.items} blockDetailedView={false} />
             </div>
           ))
         : null}

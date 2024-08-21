@@ -1,21 +1,56 @@
+@import"../colors";
+
 .order-forms-container {
-    display: flex;
+    display: grid;
+    grid-template-rows: 1fr 5fr 5fr;
+    overflow-y: scroll;
+    place-items: center;
+    scrollbar-color: $primary-color #f8f9fa;
+    scrollbar-width: thin;
+    scroll-behavior: smooth;
+    position: absolute;
+    background-color: white;
+    border: 1px solid blue;
+    z-index: 2;
+    width: 100%;
+    height: 100vh;
+    /* Adjust height as needed */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* From https://css.glass */
+    background: rgb(255, 255, 255);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    z-index: 2;
+
+    animation: slideInFromTop .3s ease-out;
+
 
     .order-form {
-        margin: 1rem;
+        margin: 2rem;
 
         .new-order-form-section-container {
             display: flex;
-            gap: 1rem;
+            gap: .5rem;
             justify-content: start;
             align-items: top;
+            margin: 0 0 1rem 0;
 
             section {
 
                 width: fit-content;
-                border: 1px solid blue;
-                margin: 2rem;
-                padding: 0 2rem .5rem 2rem;
+                display: flex;
+                flex-direction: column;
+                align-items: flex-end;
+                color: $accent-color;
+                border-radius: 8px;
+                background-color: $primary-color;
+                border: 1px solid $primary-color;
+                padding: 0 2rem 2rem 2rem;
 
                 label {}
             }
@@ -27,11 +62,14 @@
     }
 
     .items-form-container {
-        border: 1px solid red;
         display: flex;
         flex-direction: column;
         align-items: center;
+        width: 90%;
         justify-content: baseline;
+        background-color: $accent-color;
+        color: $primary-color;
+        border-radius: 8px;
         margin: 1rem;
         padding: 1rem;
 
@@ -53,5 +91,25 @@
                 cursor: pointer;
             }
         }
+    }
+}
+
+.close-btn-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: sticky;
+    top: 20px;
+
+}
+
+@keyframes slideInFromTop {
+    from {
+        top: -100%;
+    }
+
+    to {
+        top: 50%;
     }
 }
