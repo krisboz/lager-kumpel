@@ -2,7 +2,7 @@ import axios from "axios";
 import orderService from "./orders";
 import useNotificationStore from "../zustand/useNotificationStore";
 
-const baseUrl = "http://localhost:3003/api/picklists";
+const baseUrl = "https://lager-kumpel.fly.dev/api/picklists";
 
 const getAll = async () => {
   try {

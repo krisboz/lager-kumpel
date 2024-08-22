@@ -1,7 +1,7 @@
 import axios from "axios";
 import useNotificationStore from "../zustand/useNotificationStore";
 
-const baseUrl = "http://localhost:3003/api/items";
+const baseUrl = "https://lager-kumpel.fly.dev/api/items";
 
 const getAll = async () => {
   try {
