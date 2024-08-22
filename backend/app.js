@@ -30,6 +30,9 @@ mongoose
 app.use(cors());
 app.use(express.json());
 app.use(middleware.requestLogger);
+app.use("/favicon.ico", express.static("images/favicon.ico"));
+app.use(express.static("dist"));
+
 //app.use(middleware.tokenExtractor);
 //ADD ROUTERS
 app.use("/api/items", itemsRouter);

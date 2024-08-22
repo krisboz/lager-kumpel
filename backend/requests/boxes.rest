@@ -1,6 +1,6 @@
 
 ###
-GET http://localhost:3003/api/boxes/1
+GET https://backend-delicate-dust-7996.fly.dev/api/boxes/1
 
 ###
 POST http://localhost:3003/api/boxes
