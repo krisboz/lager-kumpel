@@ -34,18 +34,42 @@ const findItemsByBarcodes = async (barcodes, session) => {
   return items;
 };
 
-const updateItemLocations = async (items, targetBin, originBin = null) => {
+function addToItemsHistory(items, quantities, jointInfo) {
+  //push at the end the things
+  console.log("Imma split up", { ...jointInfo });
+
+  items.forEach((item, index) => {
+    console.log(item);
+    item.history.push({
+      description: jointInfo.description,
+      action: jointInfo.action,
+      originBin: jointInfo.originBin,
+      targetBin: jointInfo.targetBin,
+      quantity: quantities[index],
+    });
+  });
+
+  console.log("after adding to history", items.history);
+}
+
+const updateItemData = async (
+  items,
+  targetBin,
+  originBin = null,
+  historyObject
+) => {
   for (const item of items) {
     if (originBin) {
+      //IF THERE IS AN ORIGIN BIN
       const itemInOriginBin = originBin.items.find(
         (binItem) => binItem.barcode === item.barcode
-      );
+      ); // item
       const existingLocationInItem = item.locations.find(
         (location) => location.location === originBin.name
-      );
+      ); // item.locations[location that i need]
 
       if (itemInOriginBin) {
-        const location = originBin.name;
+        //If
         const quantity = itemInOriginBin.quantity;
 
         existingLocationInItem.quantity = quantity;
@@ -113,13 +137,21 @@ const addItemToBin = async (itemsData, binName) => {
   const session = await startSession();
 
   try {
+    console.log("ITEMS DATA", itemsData);
     const bin = await findBinByName(binName, session);
     const barcodes = itemsData.map((item) => item.barcode);
+    const quantities = itemsData.map((item) => item.quantity);
     const items = await findItemsByBarcodes(barcodes, session);
 
-    //await updateItemLocations(items, itemsData, binName, bin);
+    //await updateItemData(items, itemsData, binName, bin);
     await updateBinItems(bin, items, itemsData);
-    await updateItemLocations(items, bin);
+    addToItemsHistory(items, quantities, {
+      description: "Internal movement",
+      action: "ADD",
+      originBin: "None",
+      targetBin: binName,
+    });
+    await updateItemData(items, bin);
 
     await bin.save();
 
@@ -142,6 +174,7 @@ const removeItemFromBin = async (
   try {
     const bin = await findBinByName(binName, session);
     const barcodes = itemsData.map((item) => item.barcode);
+    const quantities = itemsData.map((item) => item.quantity);
     const items = await findItemsByBarcodes(barcodes, session);
 
     for (const itemData of itemsData) {
@@ -156,8 +189,14 @@ const removeItemFromBin = async (
         }
       }
     }
+    addToItemsHistory(items, quantities, {
+      description: "Removal/ Scan in",
+      action: "REMOVE",
+      originBin: binName,
+      targetBin: "None",
+    });
 
-    await updateItemLocations(items, bin);
+    await updateItemData(items, bin);
 
     await bin.save();
 
@@ -178,6 +217,7 @@ const moveItemBins = async (itemsData, originalLocation, targetLocation) => {
   try {
     const barcodes = itemsData.map((item) => item.barcode);
     const items = await findItemsByBarcodes(barcodes, session);
+    const quantities = itemsData.map((item) => item.quantity);
 
     const originalBin = await findBinByName(originalLocation, session);
     const targetBin = await findBinByName(targetLocation, session);
@@ -217,8 +257,14 @@ const moveItemBins = async (itemsData, originalLocation, targetLocation) => {
         }
       }
     }
+    addToItemsHistory(items, quantities, {
+      description: "Internal movement",
+      action: "MOVE",
+      originBin: originalLocation,
+      targetBin: targetLocation,
+    });
 
-    await updateItemLocations(items, targetBin, originalBin);
+    await updateItemData(items, targetBin, originalBin);
     console.log(items);
 
     await originalBin.save();

@@ -1,5 +1,6 @@
 const itemsRouter = require("express").Router();
 const Item = require("../models/items");
+const helpers = require("../utils/helpers");
 
 itemsRouter.get("/", async (request, response) => {
   const items = await Item.find({});
@@ -15,6 +16,40 @@ itemsRouter.get("/exact/:barcode", async (request, response) => {
   } catch (error) {
     console.log("error fetching an item", error.message, error.stack);
     response.status(500).send({ error: "Error fetching an item by barcode" });
+  }
+});
+
+itemsRouter.get("/grouped_by_stock", async (request, response) => {
+  try {
+    // Fetch all items from the database
+    const items = await Item.find({}).lean();
+
+    let inStockCount = 0;
+    let outOfStockCount = 0;
+    const lowStockItems = [];
+
+    // Loop through each item and categorize it based on its total quantity
+    items.forEach((item) => {
+      const totalQuantity = helpers.sumQuantities(item.locations); // Calculate the total quantity of the item
+
+      if (totalQuantity === 0) {
+        outOfStockCount++; // Count items that are out of stock
+      } else if (totalQuantity < 15) {
+        lowStockItems.push({ barcode: item.barcode }); // Collect barcode for low stock items
+      } else {
+        inStockCount++; // Count items that are in stock
+      }
+    });
+
+    // Return the grouped results with counts and low stock items' barcodes
+    response.status(200).json({
+      inStockCount,
+      outOfStockCount,
+      lowStockItems, // Contains barcodes for items with quantity less than 15
+    });
+  } catch (error) {
+    console.error("Error grouping items by stock level:", error);
+    response.status(500).json({ error: "Error grouping items by stock level" });
   }
 });
 

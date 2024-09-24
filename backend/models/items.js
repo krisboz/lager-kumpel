@@ -14,6 +14,30 @@ const itemSchema = new mongoose.Schema({
   date: { type: Date, default: Date.now },
   photo: String,
   locations: [locationSchema],
+  history: [
+    {
+      date: { type: Date, default: Date.now },
+      user: { type: String, default: "User-1" },
+      quantity: Number,
+      action: String,
+      originBin: String,
+      targetBin: String,
+      description: String,
+    },
+  ],
+  /**
+   * date
+   * user
+   * quantity
+   * action
+   * from
+   * to
+   * 
+   * 15:55 | MOVE | Qty:2 | 1-a-1 | 1-a-3 |Internal movement | Kiki
+   * 15:57 | ADD | Qty:1, | 1-a-1 | Internal movement | Kiki
+   * 16:00 | SCAN-IN | Qty:1 | 1-a-1 | Scan in for order #0000040 | Kiki
+
+   */
   quantity: Number,
 });
 

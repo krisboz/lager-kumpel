@@ -25,4 +25,4 @@ Content-Type: application/json
 
 
 ###
-DELETE http://localhost:3003/api/picklists/0000034/25/1
+DELETE http://localhost:3000/api/picklists/0000079

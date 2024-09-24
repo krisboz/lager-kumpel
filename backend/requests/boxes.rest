@@ -3,11 +3,11 @@
 GET https://backend-delicate-dust-7996.fly.dev/api/boxes/1
 
 ###
-POST http://localhost:3003/api/boxes
+POST http://localhost:3000/api/boxes
 Content-Type: application/json
 
 {
-    "number":3
+    "number":10
 }
 
 ###

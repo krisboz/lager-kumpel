@@ -120,6 +120,26 @@ picklistsRouter.patch("/:picklistNumber", async (request, response) => {
   }
 });
 
+picklistsRouter.delete("/:picklistNumber", async (request, response) => {
+  const picklistNumber = request.params.picklistNumber;
+
+  try {
+    const picklist = await picklistTransactions.deletePicklist(picklistNumber);
+    if (!picklist) {
+      return response.status(404).json({ message: "Picklist not found" });
+    }
+
+    response.status(200).json({
+      message: `Picklist #${picklistNumber} deleted successfully`,
+    });
+  } catch (error) {
+    console.error("Error deleting picklist:", error.message);
+    response
+      .status(500)
+      .json({ message: "Error deleting picklist", error: error.message });
+  }
+});
+
 picklistsRouter.delete(
   "/:picklistNumber/:barcode/:quantity",
   async (request, response) => {

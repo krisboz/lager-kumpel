@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const Picklist = require("../../models/picklists");
 const Box = require("../../models/orderBoxes");
+const Order = require("../../models/customerOrders");
 const transactions = require("../transactions");
 
 const scanInItem = async (picklistNumber, barcode, quantity) => {
@@ -13,11 +14,12 @@ const scanInItem = async (picklistNumber, barcode, quantity) => {
     if (!picklist) {
       throw new Error("Picklist not found");
     }
-    console.log("Scan In Item", { picklist });
+    console.log("items to scan in", picklist.items);
 
     const itemInPicklist = picklist.items.find(
       (item) => item.barcode === barcode
     );
+    console.log("item being scanned in :", itemInPicklist);
     if (!itemInPicklist) {
       throw Error("No such item in picklist");
     }
@@ -138,8 +140,46 @@ function determineTargetBox(orders, boxes, barcode, quantity) {
   return { number: boxToScan, orderNumber: scannedItemOrder[0].orderNumber };
 }
 
-async function deletePicklistByNumber(picklistNumber, session) {
-  await Picklist.deleteOne({ picklistNumber }).session(session);
+async function deletePicklistByNumber(picklistNumber) {
+  await Picklist.deleteOne({ picklistNumber });
+}
+
+async function deletePicklist(picklistNumber) {
+  const session = await mongoose.startSession();
+  session.startTransaction();
+  try {
+    // Step 1: Find the picklist by its picklistNumber
+    const picklist = await Picklist.findOne({ picklistNumber }).session(
+      session
+    );
+    if (!picklist) {
+      throw new Error(`Picklist with number ${picklistNumber} not found.`);
+    }
+
+    // Step 2: Extract all the orders associated with the picklist
+    const orderNumbers = picklist.orders.map((order) => order.orderNumber);
+
+    // Step 3: Update each order's 'inPicklist' field to false
+    await Order.updateMany(
+      { orderNumber: { $in: orderNumbers } },
+      { $set: { inPicklist: false } },
+      { session }
+    );
+
+    // Step 4: Delete the picklist
+    await Picklist.deleteOne({ picklistNumber }).session(session);
+
+    // Step 5: Commit the transaction
+    await session.commitTransaction();
+    session.endSession();
+
+    return { message: `Picklist ${picklistNumber} deleted successfully.` };
+  } catch (error) {
+    // Step 6: Abort the transaction if an error occurs
+    await session.abortTransaction();
+    session.endSession();
+    throw new Error(`Error deleting picklist: ${error.message}`);
+  }
 }
 
 async function deleteItemFromPicklist(picklistNumber, barcode, session) {
@@ -152,4 +192,5 @@ async function deleteItemFromPicklist(picklistNumber, barcode, session) {
 module.exports = {
   scanInItem,
   deletePicklistByNumber,
+  deletePicklist,
 };

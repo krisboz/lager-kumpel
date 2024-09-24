@@ -1,7 +1,21 @@
-GET http://localhost:3003/api/orders
+GET http://localhost:3000/api/orders
 
 ###
-POST http://localhost:3003/api/orders
+GET http://localhost:3000/api/orders/month
+
+###
+GET http://localhost:3000/api/orders/grouped_by_country?timePeriod=year
+
+###
+GET http://localhost:3000/api/orders/count?timePeriod=month&processed=true
+
+###
+
+GET http://localhost:3000/api/orders/revenue?timePeriod=today
+
+
+###
+POST http://localhost:3000/api/orders
 Content-Type: application/json
 
 {
@@ -10,27 +24,26 @@ Content-Type: application/json
 }
 
 
+###
+GET http://localhost:3000/api/orders/0000009
 
 ###
-GET http://localhost:3003/api/orders/0000009
+GET http://localhost:3000/api/orders/processed
 
 ###
-GET http://localhost:3003/api/orders/processed
+GET http://localhost:3000/api/orders/unprocessed
 
 ###
-GET http://localhost:3003/api/orders/unprocessed
+GET http://localhost:3000/api/orders/in_picklist
 
 ###
-GET http://localhost:3003/api/orders/in_picklist
-
-###
-GET http://localhost:3003/api/orders/not_in_picklist
+GET http://localhost:3000/api/orders/not_in_picklist
 
 
 
 ###
-PATCH http://localhost:3003/api/orders/0000009/processed
+PATCH http://localhost:3000/api/orders/0000009/processed
 ###
-PATCH http://localhost:3003/api/orders/0000009/in_picklist
+PATCH http://localhost:3000/api/orders/0000009/in_picklist
 
 

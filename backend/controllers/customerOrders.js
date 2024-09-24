@@ -1,6 +1,7 @@
 const customerOrdersRouter = require("express").Router();
 const Order = require("../models/customerOrders");
 const Item = require("../models/items");
+const helpers = require("../utils/helpers");
 
 customerOrdersRouter.get("/", async (request, response) => {
   try {
@@ -9,6 +10,45 @@ customerOrdersRouter.get("/", async (request, response) => {
   } catch (error) {
     console.log("error fetching orders", error);
     response.status(500).send({ error: "Error fetching orders" });
+  }
+});
+
+customerOrdersRouter.get("/today", async (request, response) => {
+  try {
+    const { startDate, endDate } = helpers.getDateRange("today");
+    const orders = await Order.find({
+      createdAt: { $gte: startDate, $lt: endDate },
+    });
+    response.status(200).json(orders);
+  } catch (error) {
+    console.error("Error fetching today's orders:", error);
+    response.status(500).json({ error: "Error fetching today's orders" });
+  }
+});
+
+customerOrdersRouter.get("/month", async (request, response) => {
+  try {
+    const { startDate, endDate } = helpers.getDateRange("month");
+    const orders = await Order.find({
+      createdAt: { $gte: startDate, $lt: endDate },
+    });
+    response.status(200).json(orders);
+  } catch (error) {
+    console.error("Error fetching this month's orders:", error);
+    response.status(500).json({ error: "Error fetching this month's orders" });
+  }
+});
+
+customerOrdersRouter.get("/year", async (request, response) => {
+  try {
+    const { startDate, endDate } = helpers.getDateRange("year");
+    const orders = await Order.find({
+      createdAt: { $gte: startDate, $lt: endDate },
+    });
+    response.status(200).json(orders);
+  } catch (error) {
+    console.error("Error fetching this year's orders:", error);
+    response.status(500).json({ error: "Error fetching this year's orders" });
   }
 });
 
@@ -37,6 +77,67 @@ customerOrdersRouter.get("/processed", async (request, response) => {
       error.stack
     );
     response.status(500).json({ error: "Error fetching processed orders" });
+  }
+});
+
+customerOrdersRouter.get("/grouped_by_country", async (request, response) => {
+  const { timePeriod } = request.query;
+
+  try {
+    // Get the date range for the specified time period
+    const { startDate, endDate } = helpers.getDateRange(timePeriod);
+
+    // Use the aggregation pipeline to filter by date and group by country
+    const ordersByCountry = await Order.aggregate([
+      {
+        // Match orders within the specified date range
+        $match: {
+          createdAt: { $gte: startDate, $lt: endDate },
+        },
+      },
+      {
+        // Group by the country field in the address object and count orders per country
+        $group: {
+          _id: "$address.country", // Group by the 'country' field
+          totalOrders: { $sum: 1 }, // Count orders per country
+        },
+      },
+      {
+        // Sort by the number of orders, descending (optional)
+        $sort: { totalOrders: -1 },
+      },
+    ]);
+
+    response.status(200).json(ordersByCountry);
+  } catch (error) {
+    console.error("Error grouping orders by country:", error);
+    response.status(500).json({ error: "Error grouping orders by country" });
+  }
+});
+
+customerOrdersRouter.get("/count", async (request, response) => {
+  const { timePeriod, processed } = request.query;
+
+  try {
+    // Get the date range based on the requested time period
+    const { startDate, endDate } = helpers.getDateRange(timePeriod);
+
+    // Build the query object dynamically
+    const query = {
+      createdAt: { $gte: startDate, $lt: endDate },
+    };
+
+    if (processed !== undefined) {
+      query.processed = processed === "true";
+    }
+
+    // Count the orders based on the query
+    const count = await Order.countDocuments(query);
+
+    response.status(200).json({ count });
+  } catch (error) {
+    console.error("Error counting orders:", error);
+    response.status(500).json({ error: "Error counting orders" });
   }
 });
 
@@ -70,6 +171,35 @@ customerOrdersRouter.get("/not_in_picklist", async (request, response) => {
     response
       .status(500)
       .json({ error: "Error fetching not in picklist orders" });
+  }
+});
+customerOrdersRouter.get("/revenue", async (request, response) => {
+  const { timePeriod } = request.query; // 'day', 'month', or 'year'
+
+  try {
+    // Use the getDateRange helper to get the correct date range
+    const { startDate, endDate } = helpers.getDateRange(timePeriod);
+
+    // Fetch processed orders within the date range
+    const orders = await Order.find({
+      processed: true, // Only look at processed orders
+      createdAt: { $gte: startDate, $lt: endDate }, // Filter by the createdAt date
+    }).lean();
+
+    // Calculate total revenue by summing the price of items in each order
+    const revenue = orders.reduce((total, order) => {
+      const revenue = total + helpers.sumOrderRevenue(order.items).totalRevenue;
+      return revenue;
+    }, 0);
+    const cost = orders.reduce((total, order) => {
+      const revenue = total + helpers.sumOrderRevenue(order.items).totalCost;
+      return revenue;
+    }, 0);
+
+    response.status(200).json({ orders: orders.length, revenue, cost });
+  } catch (error) {
+    console.error("Error calculating total revenue:", error);
+    response.status(500).json({ error: "Error calculating total revenue" });
   }
 });
 
@@ -109,6 +239,7 @@ customerOrdersRouter.post("/", async (request, response) => {
           quantity: item.quantity,
           photo: itemDetails.photo,
           price: itemDetails.price,
+          cost: itemDetails.cost,
           locations: itemDetails.locations,
         };
       })
@@ -208,6 +339,28 @@ customerOrdersRouter.patch(
       const updatedOrder = await Order.findOneAndUpdate(
         { orderNumber },
         { $set: { inPicklist: true } }, // Update operation
+        { new: true }
+      );
+      if (!updatedOrder) {
+        return response.status(404).json({ error: "Order not found" });
+      }
+      response.status(200).json(updatedOrder);
+    } catch (error) {
+      console.error("Error updating order:", error.message, error.stack);
+      response.status(500).json({ error: "Error updating order" });
+    }
+  }
+);
+
+customerOrdersRouter.patch(
+  "/:orderNumber/not_in_picklist",
+  async (request, response) => {
+    const orderNumber = request.params.orderNumber;
+
+    try {
+      const updatedOrder = await Order.findOneAndUpdate(
+        { orderNumber },
+        { $set: { inPicklist: false } }, // Update operation
         { new: true }
       );
       if (!updatedOrder) {

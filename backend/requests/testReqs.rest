@@ -1,16 +1,16 @@
-GET http://localhost:3003/api/items
+GET http://localhost:3000/api/items/grouped_by_stock
 
 ###
-GET http://localhost:3003/api/items/25
+GET http://localhost:3000/api/items/25
 
 ###
-GET http://localhost:3003/api/items/exact/67
+GET http://localhost:3000/api/items/exact/67
 
 ###
-GET http://localhost:3003/api/bins/1a-1-a-1
+GET http://localhost:3000/api/bins/1a-1-a-1
 
 ###
-POST http://localhost:3003/api/items
+POST http://localhost:3000/api/items
 Content-Type: application/json
 
 {
@@ -23,37 +23,37 @@ Content-Type: application/json
 }
 
 ###
-GET http://localhost:3003/api/bins
+GET http://localhost:3000/api/bins
 
 ###
-POST http://localhost:3003/api/bins
+POST http://localhost:3000/api/bins
 Content-Type: application/json
 
 {
     "name": "12f-1-a-4"
 }
 ###
-DELETE http://localhost:3003/api/bins/660c6f292091423fc0c74baa
+DELETE http://localhost:3000/api/bins/660c6f292091423fc0c74baa
 
 ###
-DELETE http://localhost:3003/api/bins/12f-1-a-3/removeItem
+DELETE http://localhost:3000/api/bins/12f-1-a-3/removeItem
 Content-Type: application/json
 
 {
-    "itemsData": [{"barcode":"186","quantity":3},{"barcode": "187", "quantity":3}]
+    [{"barcode":"186","quantity":3},{"barcode": "187", "quantity":3}]
 }
 ###
 
-PUT http://localhost:3003/api/bins/12f-1-a-2/addItem
+PUT http://localhost:3000/api/bins/1-a-1/addItem
 Content-Type: application/json
 
 {
-    "itemsData": [{"barcode": "25","quantity":7}]
+    {"barcode": "01","quantity":1}
 }
 
 ###
 
-PUT http://localhost:3003/api/bins/12f-1-a-3/moveItems
+PUT http://localhost:3000/api/bins/12f-1-a-3/moveItems
 Content-Type: application/json
 
 {

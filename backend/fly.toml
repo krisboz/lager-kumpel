@@ -8,10 +8,7 @@ primary_region = 'ams'
 
 [build]
 
-[env]
-  MONGODB_PASSWORD = 'Z8O88F2NGA8Y2aoG'
-  MONGODB_URI = 'mongodb+srv://kbozinovic8:Z8O88F2NGA8Y2aoG@cluster0.hffngtv.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0'
-  PORT = '3000'
+
 
 [http_service]
   internal_port = 3000
